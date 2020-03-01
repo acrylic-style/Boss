@@ -18,6 +18,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import util.Collection;
 import util.ICollectionList;
+import xyz.acrylicstyle.boss.api.BossPluginAPI;
+import xyz.acrylicstyle.boss.api.events.BossDamageByEntityEvent;
+import xyz.acrylicstyle.boss.api.events.BossDamageEvent;
+import xyz.acrylicstyle.boss.api.events.BossDeathEvent;
 import xyz.acrylicstyle.boss.commands.ReloadBoss;
 import xyz.acrylicstyle.boss.commands.SummonBoss;
 import xyz.acrylicstyle.boss.tabCompleter.SummonBossTC;
@@ -26,7 +30,7 @@ import xyz.acrylicstyle.tomeito_core.utils.Log;
 
 import java.util.*;
 
-public class BossPlugin extends JavaPlugin implements Listener {
+public class BossPlugin extends JavaPlugin implements Listener, BossPluginAPI {
     private static BossPlugin plugin;
     public static Collection<UUID, Boss> boss = new Collection<>();
 
@@ -51,6 +55,7 @@ public class BossPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         boss.forEach((uuid, b) -> {
             Log.info("Removing boss entity " + uuid + " as plugin is disabling");
+            assert b.getBossEntity() != null;
             b.getBossEntity().remove();
         });
     }
@@ -58,6 +63,7 @@ public class BossPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onWorldUnload(WorldUnloadEvent e) {
         boss.forEach((uuid, b) -> {
+            assert b.getBossEntity() != null;
             if (!b.getBossEntity().getLocation().isWorldLoaded()) {
                 Log.info("Removing boss entity " + uuid + " as world unloaded");
                 b.getBossEntity().remove();
@@ -72,6 +78,7 @@ public class BossPlugin extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         if (boss.containsKey(e.getEntity().getUniqueId())) {
+            Bukkit.getPluginManager().callEvent(new BossDeathEvent(boss.get(e.getEntity().getUniqueId())));
             e.getDrops().clear();
             Boss boss2 = boss.get(e.getEntity().getUniqueId());
             boss2.setHealth(0);
@@ -112,7 +119,7 @@ public class BossPlugin extends JavaPlugin implements Listener {
             });
             Bukkit.broadcastMessage("");
             Bukkit.broadcastMessage("" + ChatColor.GREEN + ChatColor.BOLD + "----------------------------------------");
-            boss.remove(e.getEntity().getUniqueId()).getBossEntity().remove();
+            Objects.requireNonNull(boss.remove(e.getEntity().getUniqueId()).getBossEntity()).remove();
         }
     }
 
@@ -121,10 +128,13 @@ public class BossPlugin extends JavaPlugin implements Listener {
         double damage = e.getDamage();
         if (boss.containsKey(e.getEntity().getUniqueId()) && e.getDamager().getType() == EntityType.PLAYER) {
             Boss boss2 = boss.get(e.getEntity().getUniqueId());
+            BossDamageByEntityEvent bossDamageByEntityEvent = new BossDamageByEntityEvent(boss2, damage);
+            Bukkit.getPluginManager().callEvent(bossDamageByEntityEvent);
+            damage = bossDamageByEntityEvent.getDamage();
             AtomicDouble atomicDouble = boss2.participants.getOrDefault(e.getDamager().getUniqueId(), new AtomicDouble());
             atomicDouble.addAndGet(damage);
             boss2.participants.add(e.getDamager().getUniqueId(), atomicDouble);
-            boss2.decreaseHealth(damage);
+            boss2.decreaseHealth(bossDamageByEntityEvent.getFinalDamage() == 0 ? damage : bossDamageByEntityEvent.getFinalDamage());
             boss.add(e.getEntity().getUniqueId(), boss2);
             e.setDamage(0);
         } else if (boss.containsKey(e.getDamager().getUniqueId()) && e.getEntity().getType() == EntityType.PLAYER) {
@@ -137,7 +147,15 @@ public class BossPlugin extends JavaPlugin implements Listener {
         if (boss.containsKey(e.getEntity().getUniqueId())) {
             if (e.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
                     && e.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
-                boss.get(e.getEntity().getUniqueId()).decreaseHealth(e.getDamage());
+                double damage = e.getDamage();
+                BossDamageEvent bossDamageEvent = new BossDamageEvent(boss.get(e.getEntity().getUniqueId()), damage);
+                Bukkit.getPluginManager().callEvent(bossDamageEvent);
+                damage = bossDamageEvent.getDamage();
+                if (bossDamageEvent.isCancelled()) {
+                    e.setCancelled(true);
+                    return;
+                }
+                boss.get(e.getEntity().getUniqueId()).decreaseHealth(damage);
                 e.setDamage(0);
             }
         }

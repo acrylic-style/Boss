@@ -10,11 +10,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import util.Collection;
 import xyz.acrylicstyle.boss.BossPlugin;
+import xyz.acrylicstyle.boss.api.utils.BossAPI;
+import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class Boss {
+public class Boss implements BossAPI {
     private double maxHealth;
     private double health;
     public String customName;
@@ -35,7 +37,8 @@ public class Boss {
         if (this.bossEntity != null) setBossEntity();
     }
 
-    public BossDefinition getDefinition() { return definition; }
+    @NotNull
+    public BossDefinitionAPI getDefinition() { return definition; }
 
     public void summonBoss(Location location) {
         if (this.bossEntity != null) throw new IllegalArgumentException("Boss has already summoned!");
@@ -93,5 +96,10 @@ public class Boss {
 
     public double getDamage(double base) {
         return base + (level / base);
+    }
+
+    @Override
+    public Collection<UUID, AtomicDouble> getParticipants() {
+        return participants;
     }
 }

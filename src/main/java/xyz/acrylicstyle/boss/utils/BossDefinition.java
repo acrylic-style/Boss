@@ -5,8 +5,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import util.CollectionList;
+import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 
-public class BossDefinition {
+public class BossDefinition implements BossDefinitionAPI {
     private String id;
     private EntityType entityType;
     private double maxHealth;

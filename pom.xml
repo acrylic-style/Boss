@@ -55,5 +55,10 @@
             <version>18.0.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>xyz.acrylicstyle</groupId>
+            <artifactId>BossAPI</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 </project>
