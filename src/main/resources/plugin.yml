@@ -1,0 +1,12 @@
+name: Boss
+main: xyz.acrylicstyle.boss.BossPlugin
+version: 0.0.1
+depend: ["TomeitoLib"]
+api-version: "1.15"
+commands:
+  summonboss:
+    usage: "/<command> <id> [x] [y] [z]"
+    permission: boss.summonboss
+  reloadboss:
+    usage: "/<command>"
+    permission: boss.reloadboss
