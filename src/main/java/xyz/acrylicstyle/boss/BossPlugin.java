@@ -140,6 +140,10 @@ public class BossPlugin extends JavaPlugin implements Listener, BossPluginAPI {
             Boss boss2 = boss.get(e.getEntity().getUniqueId());
             BossDamageByEntityEvent bossDamageByEntityEvent = new BossDamageByEntityEvent(boss2, damage);
             Bukkit.getPluginManager().callEvent(bossDamageByEntityEvent);
+            if (bossDamageByEntityEvent.isCancelled()) {
+                e.setCancelled(true);
+                return;
+            }
             damage = bossDamageByEntityEvent.getDamage();
             AtomicDouble atomicDouble = boss2.participants.getOrDefault(e.getDamager().getUniqueId(), new AtomicDouble());
             atomicDouble.addAndGet(damage);

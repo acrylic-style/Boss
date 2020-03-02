@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import util.Collection;
@@ -51,7 +52,7 @@ public class Boss implements BossAPI {
                 + ChatColor.RED + location.getBlockX() + ChatColor.YELLOW + ", "
                 + ChatColor.RED + location.getBlockY() + ChatColor.YELLOW + ", "
                 + ChatColor.RED + location.getBlockZ() + ChatColor.YELLOW + "にスポーンしました！");
-        TextComponent text = new TextComponent(ChatColor.GREEN + "ここをクリックするとテレポートします！");
+        TextComponent text = new TextComponent(ChatColor.GREEN + "[ ここをクリックするとテレポートします！ ]");
         text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/teleportboss " + bossEntity.getUniqueId()));
         Bukkit.spigot().broadcast(text);
         Bukkit.getWorlds().forEach(world -> world.playSound(location, Sound.ENTITY_WITHER_SPAWN, Float.MAX_VALUE, 1));
@@ -71,6 +72,14 @@ public class Boss implements BossAPI {
         Objects.requireNonNull(this.bossEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(100);
         BossPlugin.boss.add(this.bossEntity.getUniqueId(), this);
         applyHealth();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!bossEntity.isDead()) {
+                    setHealth(0);
+                }
+            }
+        }.runTaskLater(BossPlugin.getInstance(), 20*60*30);
     }
 
     public void decreaseHealth(double health) {
