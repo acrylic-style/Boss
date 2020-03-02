@@ -14,19 +14,22 @@ public class BossDefinition implements BossDefinitionAPI {
     private String customName;
     private int level;
     private CollectionList<ItemStack> rewards;
+    CollectionList<ItemStack> armor;
 
     public BossDefinition(String id,
                           EntityType entityType,
                           double maxHealth,
                           String customName,
                           int level,
-                          CollectionList<ItemStack> rewards) {
+                          CollectionList<ItemStack> rewards,
+                          CollectionList<ItemStack> armor) {
         this.id = id;
         this.entityType = entityType;
         this.maxHealth = maxHealth;
         this.customName = customName;
         this.level = level;
         this.rewards = rewards;
+        this.armor = armor;
     }
 
     public String getId() {

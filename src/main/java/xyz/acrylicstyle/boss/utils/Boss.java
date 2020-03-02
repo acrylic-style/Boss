@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import util.Collection;
+import util.CollectionList;
 import xyz.acrylicstyle.boss.BossPlugin;
 import xyz.acrylicstyle.boss.api.utils.BossAPI;
 import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
@@ -65,8 +66,16 @@ public class Boss implements BossAPI {
         this.bossEntity.setHealth(20);
         this.bossEntity.setRemoveWhenFarAway(false);
         if (this.bossEntity.getEquipment() != null) {
-            this.bossEntity.getEquipment().setHelmet(new ItemStack(Material.OAK_BUTTON));
+            CollectionList<ItemStack> armor = ((BossDefinition) getDefinition()).armor;
+            if (armor.size() == 0 || armor.get(0) == null) this.bossEntity.getEquipment().setHelmet(new ItemStack(Material.OAK_BUTTON));
+            if (armor.size() >= 1) this.bossEntity.getEquipment().setHelmet(armor.get(0));
+            if (armor.size() >= 2) this.bossEntity.getEquipment().setChestplate(armor.get(1));
+            if (armor.size() >= 3) this.bossEntity.getEquipment().setLeggings(armor.get(2));
+            if (armor.size() >= 4) this.bossEntity.getEquipment().setBoots(armor.get(3));
             this.bossEntity.getEquipment().setHelmetDropChance(0.0F);
+            this.bossEntity.getEquipment().setChestplateDropChance(0.0F);
+            this.bossEntity.getEquipment().setLeggingsDropChance(0.0F);
+            this.bossEntity.getEquipment().setBootsDropChance(0.0F);
         }
         if (this.bossEntity instanceof Zombie) ((Zombie) this.bossEntity).setBaby(false);
         Objects.requireNonNull(this.bossEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(100);
@@ -111,7 +120,7 @@ public class Boss implements BossAPI {
     }
 
     public double getDamage(double base) {
-        return base + (level / base);
+        return (5 + level + (base / 5)) * (1 + base/100);
     }
 
     @Override
