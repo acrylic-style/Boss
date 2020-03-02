@@ -1,6 +1,8 @@
 package xyz.acrylicstyle.boss.utils;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
@@ -48,6 +50,9 @@ public class Boss implements BossAPI {
                 + ChatColor.RED + location.getBlockX() + ChatColor.YELLOW + ", "
                 + ChatColor.RED + location.getBlockY() + ChatColor.YELLOW + ", "
                 + ChatColor.RED + location.getBlockZ() + ChatColor.YELLOW + "にスポーンしました！");
+        TextComponent text = new TextComponent(ChatColor.GREEN + "ここをクリックするとテレポートします！");
+        text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "teleportboss " + bossEntity.getUniqueId()));
+        Bukkit.spigot().broadcast(text);
         Bukkit.getWorlds().forEach(world -> world.playSound(location, Sound.ENTITY_WITHER_SPAWN, Float.MAX_VALUE, 1));
         setBossEntity();
     }

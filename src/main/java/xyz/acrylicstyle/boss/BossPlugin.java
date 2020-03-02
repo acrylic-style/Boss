@@ -30,6 +30,7 @@ import xyz.acrylicstyle.boss.api.utils.BossAPI;
 import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 import xyz.acrylicstyle.boss.commands.ReloadBoss;
 import xyz.acrylicstyle.boss.commands.SummonBoss;
+import xyz.acrylicstyle.boss.commands.TeleportBoss;
 import xyz.acrylicstyle.boss.tabCompleter.SummonBossTC;
 import xyz.acrylicstyle.boss.utils.Boss;
 import xyz.acrylicstyle.boss.utils.Utils;
@@ -56,6 +57,7 @@ public class BossPlugin extends JavaPlugin implements Listener, BossPluginAPI {
         //noinspection ConstantConditions
         Bukkit.getPluginCommand("summonboss").setTabCompleter(new SummonBossTC());
         Objects.requireNonNull(Bukkit.getPluginCommand("reloadboss")).setExecutor(new ReloadBoss());
+        Objects.requireNonNull(Bukkit.getPluginCommand("teleportboss")).setExecutor(new TeleportBoss());
         Log.info("Enabled Boss");
     }
 
