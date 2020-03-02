@@ -1,5 +1,6 @@
 package xyz.acrylicstyle.boss.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -54,6 +55,7 @@ public final class Utils {
                         .map(map -> ICollection.asCollection(map).map((k, v) -> (String) k, (k, v) -> (Object) v))
                         .forEach(map -> {
                             Material rewardType = Material.valueOf((String) map.getOrDefault("material", "STONE"));
+                            String displayName = (String) map.get("displayName");
                             int rewardAmount = (int) map.getOrDefault("amount", 1);
                             @SuppressWarnings("unchecked") Map<String, Object> enchantmentsRaw = (Map<String, Object>) map.get("enchantments");
                             Collection<Enchantment, Integer> enchantments = enchantmentsRaw == null ? null : ICollection.asCollection(enchantmentsRaw)
@@ -61,6 +63,7 @@ public final class Utils {
                             ItemStack reward = new ItemStack(rewardType, rewardAmount);
                             ItemMeta meta = reward.getItemMeta();
                             assert meta != null;
+                            if (displayName != null) meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
                             if (enchantments != null) enchantments.forEach((ench, eLevel) -> meta.addEnchant(ench, eLevel, true));
                             reward.setItemMeta(meta);
                             finalRewards.add(reward);
