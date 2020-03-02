@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.acrylicstyle.boss.utils.BossDefinition;
+import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 import xyz.acrylicstyle.boss.utils.Utils;
 import xyz.acrylicstyle.tomeito_core.utils.TypeUtil;
 
@@ -31,7 +31,7 @@ public class SummonBoss implements CommandExecutor {
             }
             Player player = (Player) sender;
             String id = args[0];
-            BossDefinition bossDefinition = Utils.getBossDefinitionById(id);
+            BossDefinitionAPI bossDefinition = Utils.getBossDefinitionById(id);
             if (bossDefinition == null) {
                 sender.sendMessage(ChatColor.RED + "指定されたボスが見つかりません。");
                 return true;
@@ -41,7 +41,7 @@ public class SummonBoss implements CommandExecutor {
             return true;
         }
         String id = args[0];
-        BossDefinition bossDefinition = Utils.getBossDefinitionById(id);
+        BossDefinitionAPI bossDefinition = Utils.getBossDefinitionById(id);
         if (bossDefinition == null) {
             sender.sendMessage(ChatColor.RED + "指定されたボスが見つかりません。");
             return true;

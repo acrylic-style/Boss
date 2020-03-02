@@ -10,6 +10,7 @@ import util.Collection;
 import util.CollectionList;
 import util.ICollection;
 import util.ICollectionList;
+import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
 
@@ -27,9 +28,9 @@ public final class Utils {
         return ICollectionList.asList(itemsArray);
     }
 
-    public static CollectionList<BossDefinition> bossDefinitions = null;
+    public static CollectionList<BossDefinitionAPI> bossDefinitions = null;
 
-    public static CollectionList<BossDefinition> getBossDefinitions() {
+    public static CollectionList<BossDefinitionAPI> getBossDefinitions() {
         ICollectionList<String> files = getBossDefinitionFiles();
         return files.map(file -> {
             Log.debug("Processing file: " + file);
@@ -75,12 +76,12 @@ public final class Utils {
         });
     }
 
-    public static CollectionList<BossDefinition> getBossDefinitionsCached() {
+    public static CollectionList<BossDefinitionAPI> getBossDefinitionsCached() {
         if (bossDefinitions == null) bossDefinitions = Utils.getBossDefinitions();
         return bossDefinitions;
     }
 
-    public static BossDefinition getBossDefinitionById(String id) {
+    public static BossDefinitionAPI getBossDefinitionById(String id) {
         try {
             return getBossDefinitionsCached().filter(b -> b.getId().equals(id)).first();
         } catch (IndexOutOfBoundsException ignored) {

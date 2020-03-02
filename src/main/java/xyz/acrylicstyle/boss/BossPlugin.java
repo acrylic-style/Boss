@@ -14,18 +14,25 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import util.Collection;
+import util.CollectionList;
 import util.ICollectionList;
 import xyz.acrylicstyle.boss.api.BossPluginAPI;
 import xyz.acrylicstyle.boss.api.events.BossDamageByEntityEvent;
 import xyz.acrylicstyle.boss.api.events.BossDamageEvent;
 import xyz.acrylicstyle.boss.api.events.BossDeathEvent;
+import xyz.acrylicstyle.boss.api.utils.BossAPI;
+import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 import xyz.acrylicstyle.boss.commands.ReloadBoss;
 import xyz.acrylicstyle.boss.commands.SummonBoss;
 import xyz.acrylicstyle.boss.tabCompleter.SummonBossTC;
 import xyz.acrylicstyle.boss.utils.Boss;
+import xyz.acrylicstyle.boss.utils.Utils;
 import xyz.acrylicstyle.tomeito_core.utils.Log;
 
 import java.util.*;
@@ -41,6 +48,7 @@ public class BossPlugin extends JavaPlugin implements Listener, BossPluginAPI {
 
     @Override
     public void onEnable() {
+        Bukkit.getServicesManager().register(BossPluginAPI.class, this, this, ServicePriority.Normal);
         Bukkit.getPluginManager().registerEvents(this, this);
         if (Bukkit.getPluginCommand("summonboss") == null) throw new NullPointerException("summonboss cannot be null");
         //noinspection ConstantConditions
@@ -171,5 +179,35 @@ public class BossPlugin extends JavaPlugin implements Listener, BossPluginAPI {
 
     public static BossPlugin getInstance() {
         return plugin;
+    }
+
+    @Override
+    public @NotNull CollectionList<String> getBossDefinitionFiles() {
+        return Utils.getBossDefinitionFiles();
+    }
+
+    @Override
+    public @NotNull CollectionList<BossDefinitionAPI> getBossDefinitions() {
+        return Utils.getBossDefinitions();
+    }
+
+    @Override
+    public @NotNull CollectionList<BossDefinitionAPI> getBossDefinitionsCached() {
+        return Utils.getBossDefinitionsCached();
+    }
+
+    @Override
+    public @Nullable BossDefinitionAPI getBossDefinitionById(String s) {
+        return Utils.getBossDefinitionById(s);
+    }
+
+    @Override
+    public @Nullable BossAPI getBossByUniqueId(UUID uuid) {
+        return boss.get(uuid);
+    }
+
+    @Override
+    public @NotNull Collection<UUID, BossAPI> getBosses() {
+        return boss.map((k, v) -> k, (k, v) -> v);
     }
 }

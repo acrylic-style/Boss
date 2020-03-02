@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import util.ICollectionList;
+import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 import xyz.acrylicstyle.boss.utils.BossDefinition;
 import xyz.acrylicstyle.boss.utils.Utils;
 
@@ -21,11 +22,11 @@ public class SummonBossTC implements TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> emptyList = new ArrayList<>();
-        if (args.length == 0) return Utils.getBossDefinitionsCached().map(BossDefinition::getId);
+        if (args.length == 0) return Utils.getBossDefinitionsCached().map(BossDefinitionAPI::getId);
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length == 1)
-                return Utils.filterArgsList(Utils.getBossDefinitionsCached().map(BossDefinition::getId), args[0]);
+                return Utils.filterArgsList(Utils.getBossDefinitionsCached().map(BossDefinitionAPI::getId), args[0]);
             if (args.length == 2)
                 return Utils.filterArgsList(Arrays.asList(Double.toString(player.getLocation().getX()), args[1]), args[1]);
             if (args.length == 3)
@@ -35,7 +36,7 @@ public class SummonBossTC implements TabCompleter {
         } else if (sender instanceof BlockCommandSender) {
             BlockCommandSender commandBlock = (BlockCommandSender) sender;
             if (args.length == 1)
-                return Utils.filterArgsList(Utils.getBossDefinitionsCached().map(BossDefinition::getId), args[0]);
+                return Utils.filterArgsList(Utils.getBossDefinitionsCached().map(BossDefinitionAPI::getId), args[0]);
             if (args.length == 2)
                 return Utils.filterArgsList(Arrays.asList(Double.toString(commandBlock.getBlock().getLocation().getX()), args[1]), args[1]);
             if (args.length == 3)
