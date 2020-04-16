@@ -8,12 +8,12 @@ import util.CollectionList;
 import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
 
 public class BossDefinition implements BossDefinitionAPI {
-    private String id;
-    private EntityType entityType;
-    private double maxHealth;
-    private String customName;
-    private int level;
-    private CollectionList<ItemStack> rewards;
+    private final String id;
+    private final EntityType entityType;
+    private final double maxHealth;
+    private final String customName;
+    private final int level;
+    private final CollectionList<ItemStack> rewards;
     CollectionList<ItemStack> armor;
 
     public BossDefinition(String id,

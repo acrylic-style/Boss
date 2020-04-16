@@ -34,7 +34,7 @@ import xyz.acrylicstyle.boss.commands.TeleportBoss;
 import xyz.acrylicstyle.boss.tabCompleter.SummonBossTC;
 import xyz.acrylicstyle.boss.utils.Boss;
 import xyz.acrylicstyle.boss.utils.Utils;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
 
 import java.util.*;
 

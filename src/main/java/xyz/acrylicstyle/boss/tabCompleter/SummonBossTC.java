@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import util.ICollectionList;
 import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
-import xyz.acrylicstyle.boss.utils.BossDefinition;
 import xyz.acrylicstyle.boss.utils.Utils;
 
 import java.util.ArrayList;

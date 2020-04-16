@@ -22,14 +22,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Boss implements BossAPI {
-    private double maxHealth;
+    private final double maxHealth;
     private double health;
     public String customName;
     private LivingEntity bossEntity;
-    private EntityType entityType;
-    private int level;
+    private final EntityType entityType;
+    private final int level;
     public Collection<UUID, AtomicDouble> participants = new Collection<>();
-    private BossDefinition definition;
+    private final BossDefinition definition;
 
     public Boss(@Nullable LivingEntity bossEntity, @NotNull EntityType entityType, double maxHealth, String customName, int level, BossDefinition definition) {
         this.maxHealth = maxHealth;

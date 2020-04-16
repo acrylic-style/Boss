@@ -12,8 +12,8 @@ import util.CollectionList;
 import util.ICollection;
 import util.ICollectionList;
 import xyz.acrylicstyle.boss.api.utils.BossDefinitionAPI;
-import xyz.acrylicstyle.tomeito_core.providers.ConfigProvider;
-import xyz.acrylicstyle.tomeito_core.utils.Log;
+import xyz.acrylicstyle.tomeito_api.providers.ConfigProvider;
+import xyz.acrylicstyle.tomeito_api.utils.Log;
 
 import java.io.File;
 import java.util.List;
