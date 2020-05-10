@@ -33,15 +33,9 @@ public final class Utils {
 
     public static CollectionList<BossDefinitionAPI> getBossDefinitions() {
         ICollectionList<String> files = getBossDefinitionFiles();
-        return files.map(file -> {
+        return (CollectionList<BossDefinitionAPI>) files.<BossDefinitionAPI>map(file -> {
             Log.debug("Processing file: " + file);
-            ConfigProvider config;
-            try {
-                config = new ConfigProvider("./plugins/Boss/defs/" + file);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
+            ConfigProvider config = new ConfigProvider("./plugins/Boss/defs/" + file);
             String id = config.getString("id");
             if (id == null) throw new NullPointerException("Item ID must be specified.");
             double maxHealth = config.getDouble("maxHealth", 100);

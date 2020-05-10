@@ -67,11 +67,13 @@ public class Boss implements BossAPI {
         this.bossEntity.setRemoveWhenFarAway(false);
         if (this.bossEntity.getEquipment() != null) {
             CollectionList<ItemStack> armor = ((BossDefinition) getDefinition()).armor;
-            if (armor.size() == 0 || armor.get(0) == null) this.bossEntity.getEquipment().setHelmet(new ItemStack(Material.OAK_BUTTON));
-            if (armor.size() >= 1) this.bossEntity.getEquipment().setHelmet(armor.get(0));
-            if (armor.size() >= 2) this.bossEntity.getEquipment().setChestplate(armor.get(1));
-            if (armor.size() >= 3) this.bossEntity.getEquipment().setLeggings(armor.get(2));
-            if (armor.size() >= 4) this.bossEntity.getEquipment().setBoots(armor.get(3));
+            if (armor != null) {
+                if (armor.size() == 0 || armor.get(0) == null) this.bossEntity.getEquipment().setHelmet(new ItemStack(Material.OAK_BUTTON));
+                if (armor.size() >= 1) this.bossEntity.getEquipment().setHelmet(armor.get(0));
+                if (armor.size() >= 2) this.bossEntity.getEquipment().setChestplate(armor.get(1));
+                if (armor.size() >= 3) this.bossEntity.getEquipment().setLeggings(armor.get(2));
+                if (armor.size() >= 4) this.bossEntity.getEquipment().setBoots(armor.get(3));
+            }
             this.bossEntity.getEquipment().setHelmetDropChance(0.0F);
             this.bossEntity.getEquipment().setChestplateDropChance(0.0F);
             this.bossEntity.getEquipment().setLeggingsDropChance(0.0F);

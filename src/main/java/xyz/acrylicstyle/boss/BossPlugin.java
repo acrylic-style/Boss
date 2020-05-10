@@ -108,7 +108,6 @@ public class BossPlugin extends JavaPlugin implements Listener, BossPluginAPI {
                         HashMap<Integer, ItemStack> map = player.getInventory().addItem(boss2
                                 .getDefinition()
                                 .getRewards()
-                                .clone()
                                 .map(item2 -> {
                                     ItemStack item = item2.clone();
                                     item.setAmount((int) ((float) item.getAmount() * (entry.getValue().get()/boss2.getMaxHealth())));
